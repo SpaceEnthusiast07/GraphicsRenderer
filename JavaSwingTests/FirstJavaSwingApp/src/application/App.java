@@ -63,12 +63,15 @@ public class App extends JFrame implements ActionListener {
         // Sets up the key bindings
         setUpKeyBindings();
 
+        // Ensures the window starts up maximised
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         // Ensures the window is visible to the user
         this.setVisible(true);
     }
 
     public static void main(String[] args) {
-        App app = new App();
+        new App();
     }
 
     /**
