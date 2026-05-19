@@ -1,11 +1,9 @@
 package application;
 
-// So I can use Java Swing GUI Components
-import javax.swing.*;
-
 // So I can access the renderer
 import renderer.*;
-
+// So I can use Java Swing GUI Components
+import javax.swing.*;
 // So I can get the content pane of the window
 import java.awt.Container;
 
@@ -23,7 +21,10 @@ public class App extends JFrame {
         contentPane = getContentPane();
 
         // Create a new renderer page
-        RendererPage renderer = new RendererPage(this);
+        RendererPage renderer = new RendererPage(this, 800, 500);
+
+        // Add the renderer page to the window
+        contentPane.add(renderer);
 
         // Maximise the window when created
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
