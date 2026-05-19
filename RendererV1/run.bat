@@ -2,9 +2,8 @@
 :: Removes clutter from the terminal output
 @echo off
 
-:: Compile all the code
-javac -cp bin/ -d bin/ src/application/*.java
-javac -cp bin/ -d bin/ src/renderer/*.java
+:: Compile all the code in both packages
+javac -cp ./bin/ -d ./bin/ src/application/*.java src/renderer/*.java
 
 :: Run the application
-java -cp bin/ application/App
+java -cp ./bin/ application/App
