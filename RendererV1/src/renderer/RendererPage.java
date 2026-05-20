@@ -21,8 +21,14 @@ public class RendererPage extends JPanel {
     // Encapsulates the raw pixel data so it can be used by Java Swing
     BufferedImage frameBuffer;
 
+    // Does the rendering calculations
+    Renderer renderer;
+
+    // A Scene is a collection of 3D objects
+    Scene mainScene;
+
     // Demonstraight rendering functionality
-    Vertex[] cube;
+    Object3D cube;
 
     // Used for the viewpoint of rendering
     Camera camera;
@@ -40,57 +46,35 @@ public class RendererPage extends JPanel {
 
         // Traverse down the hierarchy and grab a reference to the raw pixel data
         pixels = ((DataBufferInt) frameBuffer.getRaster().getDataBuffer()).getData();
-
+        
         // Set up a new camera
         camera = new Camera();
         camera.setCoordinate(new Vector(1,0,0));
-
+        
         // Set up the cube's vertices
-        cube = new Vertex[8];
-        cube[0] = new Vertex(0,0,0);
-        cube[1] = new Vertex(1,0,0);
-        cube[2] = new Vertex(0,1,0);
-        cube[3] = new Vertex(1,1,0);
-        cube[4] = new Vertex(0,0,1);
-        cube[5] = new Vertex(1,0,1);
-        cube[6] = new Vertex(0,1,1);
-        cube[7] = new Vertex(1,1,1);
+        cube = new Object3D();
+        cube.vertices = new Point3D[] {
+            new Point3D(0,0,0), new Point3D(1,0,0),
+            new Point3D(0,1,0), new Point3D(1,1,0),
+            new Point3D(0,0,1), new Point3D(1,0,1),
+            new Point3D(0,1,1), new Point3D(1,1,1),
+        };
+        
+        // Create a new scene
+        mainScene = new Scene(new Object3D[]{cube});
+        
+        // Set up a new renderer
+        renderer = new Renderer(pixels, width, height, mainScene, camera);
 
         render();
-    }
-
-    /**
-     * Resets all pixels to black.
-     */
-    public void clearFrame() {
-        for (int i = 0; i < pixels.length; i++) {
-            pixels[i] = 0x000000;
-        }
-    }
-
-    /**
-     * Given a pixel coordinate, set its colour to the provided colour.
-     * @param x The x-coordinate of the pixel.
-     * @param y The y-coordinate of the pixel.
-     * @param colour The colour to assign to this pixel.
-     */
-    public void setPixel(int x, int y, int colour) {
-        // Ensure the provided coordinates are within the bounds of the display
-        if (x >= 0 && x < width && y >= 0 && y < height) {
-            // Converts a 2D coordinate to a 1D array index
-            int pixelIndex = (y * width) + x;
-            pixels[pixelIndex] = colour;
-        }
     }
 
     /**
      * Renders the actual frame.
      */
     public void render() {
-        clearFrame();
-
-        // Set the middle pixel to white
-        setPixel(width/2, height/2, 0xFFFFFF);
+        // Ask the renderer to render
+        renderer.render();
 
         // Tell Swing to redraw this JPanel
         repaint();
