@@ -17,7 +17,24 @@ public class Object3D {
 
     @Override
     public Object3D clone() {
-        return new Object3D(this.vertices.clone(), this.edges.clone(), this.centre.clone());
+        //return new Object3D(this.vertices.clone(), this.edges.clone(), this.centre.clone());
+        Object3D clondeObject = new Object3D();
+
+        // Clone the centre point
+        clondeObject.centre = new Point3D(this.centre.x, this.centre.y, this.centre.z);
+
+        // Clone each vertex
+        clondeObject.vertices = new Point3D[this.vertices.length];
+        Point3D vertex;
+        for (int i = 0; i < vertices.length; i++) {
+            vertex = this.vertices[i];
+            clondeObject.vertices[i] = new Point3D(vertex.x, vertex.y, vertex.z); 
+        }
+
+        // Copy over the reference to the edges as these only require a shallow copy
+        clondeObject.edges = this.edges;
+
+        return clondeObject;
     }
 
     /**

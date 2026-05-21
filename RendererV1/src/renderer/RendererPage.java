@@ -4,6 +4,8 @@ import application.App;
 // So I can use Java Swing GUI Components
 import javax.swing.*;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
@@ -69,6 +71,9 @@ public class RendererPage extends JPanel {
 
         // Capture the time just before the first frame is rendered
         this.lastTime = System.nanoTime();
+
+        // Set up the key bindings
+        setUpKeyBindings();
         
         render();
     }
@@ -95,11 +100,135 @@ public class RendererPage extends JPanel {
         // Rotate the cube in it's local x-axis
         rotateObjectInYAxis(cube, deltaTheta);
 
+        // Determine how to move the camera
+        // The camera can only be moving forward or backward, not both
+        if (camera.isMovingForward()) {
+            camera.moveForward(deltaTime);
+        }
+        else if (camera.isMovingBackward()) {
+            camera.moveBackward(deltaTime);
+        }
+        // The camera can only be moving right or left, not both
+        if (camera.isMovingRight()) {
+            camera.moveRight(deltaTime);
+        }
+        else if (camera.isMovingLeft()) {
+            camera.moveLeft(deltaTime);
+        }
+        // The camera can only be moving up or down, not both
+        if (camera.isMovingUp()) {
+            camera.moveUp(deltaTime);
+        }
+        else if (camera.isMovingDown()) {
+            camera.moveDown(deltaTime);
+        }
+
         // Ask the renderer to render
         renderer.render();
 
         // Tell Swing to redraw this JPanel
         repaint();
+    }
+
+    /**
+     * Sets up the key bindings for WASD.
+     */
+    public void setUpKeyBindings() {
+        // The InputMap is used to map physical keystrokes to "action names"
+        // WHEN_IN_FOCUSED_WINDOW tells Swing to ignore which component is in focus when the key is pressed
+        InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+        // The ActionMap is used to map "action names" to actual functions to execute
+        ActionMap actionMap = this.getActionMap();
+
+        // Specify, in the InputMap, which KeyStrokes map to which "action names"
+        inputMap.put(KeyStroke.getKeyStroke("pressed W"), "start_moving_forward");
+        inputMap.put(KeyStroke.getKeyStroke("released W"), "stop_moving_forward");
+        inputMap.put(KeyStroke.getKeyStroke("pressed A"), "start_moving_left");
+        inputMap.put(KeyStroke.getKeyStroke("released A"), "stop_moving_left");
+        inputMap.put(KeyStroke.getKeyStroke("pressed S"), "start_moving_backward");
+        inputMap.put(KeyStroke.getKeyStroke("released S"), "stop_moving_backward");
+        inputMap.put(KeyStroke.getKeyStroke("pressed D"), "start_moving_right");
+        inputMap.put(KeyStroke.getKeyStroke("released D"), "stop_moving_right");
+        inputMap.put(KeyStroke.getKeyStroke("pressed SPACE"), "start_moving_up");
+        inputMap.put(KeyStroke.getKeyStroke("released SPACE"), "stop_moving_up");
+        // "0" means no modifiers (no Shift, Alt, etc), "false" is for key press and "true" is for key release
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_CONTROL, KeyEvent.CTRL_DOWN_MASK, false), "start_moving_down");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_CONTROL, 0, true), "stop_moving_down");
+
+        // Define the functions that are called when a specific key is pressed
+        actionMap.put("start_moving_forward", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                camera.setIsMovingForward(true);
+            }
+        });
+        actionMap.put("stop_moving_forward", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                camera.setIsMovingForward(false);
+            }
+        });
+        actionMap.put("start_moving_left", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                camera.setIsMovingLeft(true);
+            }
+        });
+        actionMap.put("stop_moving_left", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                camera.setIsMovingLeft(false);
+            }
+        });
+        actionMap.put("start_moving_backward", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                camera.setIsMovingBackward(true);
+            }
+        });
+        actionMap.put("stop_moving_backward", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                camera.setIsMovingBackward(false);
+            }
+        });
+        actionMap.put("start_moving_right", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                camera.setIsMovingRight(true);
+            }
+        });
+        actionMap.put("stop_moving_right", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                camera.setIsMovingRight(false);
+            }
+        });
+        actionMap.put("start_moving_up", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                camera.setIsMovingUp(true);
+            }
+        });
+        actionMap.put("stop_moving_up", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                camera.setIsMovingUp(false);
+            }
+        });
+        actionMap.put("start_moving_down", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                camera.setIsMovingDown(true);
+            }
+        });
+        actionMap.put("stop_moving_down", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                camera.setIsMovingDown(false);
+            }
+        });
     }
 
     /**
