@@ -56,7 +56,10 @@ public class Camera {
      * @param deltaTime The time since the last frame, used to have frame independent camera movement.
      */
     public void moveForward(double deltaTime) {
-        if(this.movingBackward) return;
+        if (this.movingBackward) {
+            this.movingForward = false;
+            return;
+        }
         // Y component will always remain the same
         this.coordinate.x += deltaTime * this.cameraSpeed * forward.getX();
         this.coordinate.z += deltaTime * this.cameraSpeed * forward.getZ();
@@ -67,7 +70,10 @@ public class Camera {
      * @param deltaTime The time since the last frame, used to have frame independent camera movement.
      */
     public void moveBackward(double deltaTime) {
-        if(this.movingForward) return;
+        if (this.movingForward) {
+            this.movingBackward = false;
+            return;
+        }
         // Y component will always remain the same
         this.coordinate.x -= deltaTime * this.cameraSpeed * forward.getX();
         this.coordinate.z -= deltaTime * this.cameraSpeed * forward.getZ();
@@ -78,7 +84,10 @@ public class Camera {
      * @param deltaTime The time since the last frame, used to have frame independent camera movement.
      */
     public void moveRight(double deltaTime) {
-        if(this.movingLeft) return;
+        if (this.movingLeft) {
+            this.movingRight = false;
+            return;
+        }
         // Y component will always remain the same
         this.coordinate.x += deltaTime * this.cameraSpeed * right.getX();
         this.coordinate.z += deltaTime * this.cameraSpeed * right.getZ();
@@ -89,7 +98,10 @@ public class Camera {
      * @param deltaTime The time since the last frame, used to have frame independent camera movement.
      */
     public void moveLeft(double deltaTime) {
-        if(this.movingRight) return;
+        if (this.movingRight) {
+            this.movingLeft = false;
+            return;
+        }
         // Y component will always remain the same
         this.coordinate.x -= deltaTime * this.cameraSpeed * right.getX();
         this.coordinate.z -= deltaTime * this.cameraSpeed * right.getZ();
@@ -100,7 +112,10 @@ public class Camera {
      * @param deltaTime The time since the last frame, used to have frame independent camera movement.
      */
     public void moveUp(double deltaTime) {
-        if(this.movingDown) return;
+        if (this.movingDown) {
+            this.movingUp = false;
+            return;
+        }
         // "Up" is always in the positive y direction
         this.coordinate.y += deltaTime * this.cameraSpeed;
     }
@@ -110,7 +125,10 @@ public class Camera {
      * @param deltaTime The time since the last frame, used to have frame independent camera movement.
      */
     public void moveDown(double deltaTime) {
-        if(this.movingUp) return;
+        if (this.movingUp) {
+            this.movingDown = false;
+            return;
+        }
         // "Down" is always in the negative y direction
         this.coordinate.y -= deltaTime * this.cameraSpeed;
     }
