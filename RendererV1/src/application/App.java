@@ -10,6 +10,8 @@ import java.awt.Container;
 public class App extends JFrame {
     // The content pane used to add components to
     Container contentPane;
+    // This is the canvas for the renderer to display on
+    RendererPage rendererPage;
     
     public App() {
         // Set up the windows properties
@@ -21,10 +23,10 @@ public class App extends JFrame {
         contentPane = getContentPane();
 
         // Create a new renderer page
-        RendererPage renderer = new RendererPage(this, 800, 500);
+        rendererPage = new RendererPage(this, 1920, 1080);
 
         // Add the renderer page to the window
-        contentPane.add(renderer);
+        contentPane.add(rendererPage);
 
         // Maximise the window when created
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -33,6 +35,12 @@ public class App extends JFrame {
     }
 
     public static void main(String[] args) {
-        new App();
+        App app = new App();
+
+        // Game loop
+        while(true) {
+            app.rendererPage.render();
+            //System.out.printf("%dx%d\n", app.contentPane.getWidth(), app.contentPane.getHeight());
+        }
     }
 }

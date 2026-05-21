@@ -1,10 +1,10 @@
 package renderer;
 
 public class Point2D {
-    float x;
-    float y;
+    double x;
+    double y;
 
-    public Point2D(float x, float y) {
+    public Point2D(double x, double y) {
         this.x = x;
         this.y = y;
     }
