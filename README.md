@@ -10,6 +10,9 @@ This repository is designed as my playground for learning about graphics renderi
         <li><b>FirstJavaSwingApp</b> Is my first Java Swing application. It utilises Key Bindings so the user can navigate different pages with the keyboard.</li>
         </ul>
     </li>
+    <li><b>JavaFXTest</b> Started to learn about JavaFX.</li>
+    <li><b>RendererV1</b> First software 3D renderer using Java Swing. Contains a wireframe rendering of a rotating
+    cube and camera movement using WASD, SPACE and LCTRL.</li>
 </ul>
 
 ## Executing a Project
